@@ -1,0 +1,1 @@
+rootProject.name = "wise-saying-2025-11-08"
