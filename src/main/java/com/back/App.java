@@ -25,11 +25,16 @@ public class App {
                 actionWrite();
             } else if (cmd.startsWith("삭제")) {
                 actionDelete(cmd);
+            } else if (cmd.startsWith("수정")) {
+                actionModify(cmd);
             }
+
         }
 
         scanner.close();
     }
+
+
 
     //고객 응대 로직 시작
     private void actionWrite() {
@@ -92,6 +97,35 @@ public class App {
         System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
     }
 
+    private void actionModify(String cmd) {
+        String[] cmdBits = cmd.split("=", 2);
+
+        if (cmdBits.length < 2 || cmdBits[1].isEmpty()) {
+            System.out.println("id를 입력해주세요.");
+            return;
+        }
+
+        int id = Integer.parseInt(cmdBits[1]);
+
+        WiseSaying wiseSaying = findById(id);
+
+        if (wiseSaying == null) {
+            System.out.println("%d번 명언은 존재하지 않습니다.".formatted(id));
+            return;
+        }
+
+        System.out.printf("명언(기존) : %s\n", wiseSaying.content);
+        System.out.print("명언 : ");
+        String content = scanner.nextLine().trim();
+
+        System.out.printf("작가(기존) : %s\n", wiseSaying.author);
+        System.out.print("작가 : ");
+        String author = scanner.nextLine().trim();
+
+        modify(wiseSaying, content, author);
+    }
+
+
 
 
     // 내부 로직
@@ -108,18 +142,9 @@ public class App {
     }
 
     private int delete(int id) {
-        int deleteIndex = -1;
+        int deleteIndex = findIndexById(id);
 
-        for(int i = 0; i <= wiseSayingsLastIndex; i++)
-        {
-            if(wiseSayings[i].id==id)
-            {
-                deleteIndex = i;
-                break;
-            }
-        }
-
-        if(deleteIndex==-1) return deleteIndex;
+        if (deleteIndex == -1) return deleteIndex;
 
         for (int i = deleteIndex + 1; i <= wiseSayingsLastIndex; i++) {
             wiseSayings[i - 1] = wiseSayings[i];
@@ -127,6 +152,27 @@ public class App {
 
         wiseSayings[wiseSayingsLastIndex] = null;
         wiseSayingsLastIndex--;
+
         return deleteIndex;
+    }
+
+    private int findIndexById(int id) {
+        for (int i = 0; i <= wiseSayingsLastIndex; i++) {
+            if (wiseSayings[i].id == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private WiseSaying findById(int id) {
+        int index = findIndexById(id);
+        if (index == -1) return null;
+        return wiseSayings[index];
+    }
+
+    private void modify(WiseSaying wiseSaying, String content, String author) {
+        wiseSaying.content = content;
+        wiseSaying.author = author;
     }
 }
