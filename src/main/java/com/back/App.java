@@ -144,23 +144,28 @@ public class App {
                 );
     }
 
-    private int findIndexById(int id) {
-//        for (int i = 0; i <= wiseSayings.size(); i++) {
-//            if (wiseSayings.get(i).getId() == id) {
-//                return i;
-//            }
-//        }
-//        return -1;
-        return IntStream.range(0, wiseSayings.size())
-                .filter(index -> wiseSayings.get(index).getId() == id)
-                .findFirst()
-                .orElse(-1);
-    }
+//    private int findIndexById(int id) {
+////        for (int i = 0; i <= wiseSayings.size(); i++) {
+////            if (wiseSayings.get(i).getId() == id) {
+////                return i;
+////            }
+////        }
+////        return -1;
+//        return IntStream.range(0, wiseSayings.size())
+//                .filter(index -> wiseSayings.get(index).getId() == id)
+//                .findFirst()
+//                .orElse(-1);
+//    }
 
     private WiseSaying findById(int id) {
-        int index = findIndexById(id);
-        if (index == -1) return null;
-        return wiseSayings.get(index);
+//        int index = findIndexById(id);
+//        if (index == -1) return null;
+//        return wiseSayings.get(index);
+        return wiseSayings
+                .stream()
+                .filter(wiseSaying -> wiseSaying.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     private void modify(WiseSaying wiseSaying, String content, String author) {
