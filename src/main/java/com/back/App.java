@@ -77,8 +77,8 @@ public class App {
 
         int id = Integer.parseInt(cmdBits[1]);
 
-        int deletedIndex = delete(id);
-        if (deletedIndex == -1) {
+        boolean deleted = delete(id);
+        if (!deleted) {
             System.out.println("%d번 명언은 존재하지 않습니다.".formatted(id));
             return;
         }
@@ -126,14 +126,22 @@ public class App {
         return wiseSaying;
     }
 
-    private int delete(int id) {
-        int deleteIndex = findIndexById(id);
+    private boolean delete(int id) {
+//        int deleteIndex = findIndexById(id);
+//
+//        if (deleteIndex == -1) return deleteIndex;
+//
+//        wiseSayings.remove(deleteIndex);
+//
+//        return deleteIndex;
 
-        if (deleteIndex == -1) return deleteIndex;
-
-        wiseSayings.remove(deleteIndex);
-
-        return deleteIndex;
+        // 기존 로직보다 성능은 안 좋지만, 가독성이 좋음
+        // 실무에서는 이런 선택을 하면 안된다.
+        // 하지만 removeIf를 보여주기 위해서 사용함
+        return wiseSayings
+                .removeIf(
+                        wiseSaying -> wiseSaying.getId() == id
+                );
     }
 
     private int findIndexById(int id) {
