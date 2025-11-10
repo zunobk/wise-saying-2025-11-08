@@ -9,7 +9,7 @@ public class WiseSaying {
     private LocalDateTime modifyDate;   // 명언이 가장 마지막에 수정된 날짜
     private String content;
     private String author;
-    private static DateTimeFormatter forPrintDateTimeFormatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+    private static DateTimeFormatter forPrintDateTimeFormatter = AppContext.forPrintDateTimeFormatter;
 
     public WiseSaying(String content, String author) {
         this.content = content;
