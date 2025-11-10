@@ -18,22 +18,38 @@ public class App {
         while (true) {
             System.out.print("명령) ");
             String cmd = scanner.nextLine().trim();
+            Rq rq = new Rq(cmd);
 
-            if (cmd.equals("종료")) {
-                break;
-            } else if (cmd.equals("목록")) {
-                actionList();
-            } else if (cmd.equals("등록")) {
-                actionWrite();
-            } else if (cmd.startsWith("삭제")) {
-                actionDelete(cmd);
-            } else if (cmd.startsWith("수정")) {
-                actionModify(cmd);
+            switch (rq.getActionName())
+            {
+                case "종료":
+                    System.out.println("프로그램이 종료합니다.");
+                    return;
+                case "목록":
+                    actionList();
+                    break;
+                case "등록":
+                    actionWrite();
+                    break;
+                case "수정":
+                    actionModify(rq);
+                    break;
+                case "삭제":
+                    actionDelete(rq);
+                    break;
             }
+//            equals("종료")) {     break;
+//            } else if (rq.getActionName().equals("목록")) {
+//                actionList();
+//            } else if (rq.getActionName().equals("등록")) {
+//                actionWrite();
+//            } else if (rq.getActionName().equals("삭제")) {
+//                actionDelete(cmd);
+//            } else if (rq.getActionName().equals("수정")) {
+//                actionModify(cmd);
+//            }
 
         }
-
-        scanner.close();
     }
 
 
@@ -66,16 +82,13 @@ public class App {
         return wiseSayings.reversed();
     }
 
-    private void actionDelete(String cmd)
+    private void actionDelete(Rq rq)
     {
-        String[] cmdBits = cmd.split("=", 2);
+        int id = rq.getParamAsInt("id", -1);
 
-        if (cmdBits.length < 2 || cmdBits[1].isEmpty()) {
-            System.out.println("id를 입력해주세요.");
-            return;
+        if(id == -1){
+            System.out.println("id를 숫자로 입력해주세요.");
         }
-
-        int id = Integer.parseInt(cmdBits[1]);
 
         boolean deleted = delete(id);
         if (!deleted) {
@@ -86,15 +99,12 @@ public class App {
         System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
     }
 
-    private void actionModify(String cmd) {
-        String[] cmdBits = cmd.split("=", 2);
+    private void actionModify(Rq rq) {
+        int id = rq.getParamAsInt("id", -1);
 
-        if (cmdBits.length < 2 || cmdBits[1].isEmpty()) {
-            System.out.println("id를 입력해주세요.");
-            return;
+        if(id == -1){
+            System.out.println("id를 숫자로 입력해주세요.");
         }
-
-        int id = Integer.parseInt(cmdBits[1]);
 
         WiseSaying wiseSaying = findById(id);
 
