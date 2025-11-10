@@ -1,20 +1,26 @@
 package com.back.domain.wiseSaying.service;
 
 import com.back.WiseSaying;
+import com.back.domain.wiseSaying.repository.WiseSayingRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WiseSayingService {
 
-    private int lastId = 0;
-    private final List<WiseSaying> wiseSayings = new ArrayList<>();
+
+    private final WiseSayingRepository wiseSayingRepository;
+
+    public WiseSayingService() {
+        this.wiseSayingRepository = new WiseSayingRepository();
+    }
 
     // 내부 로직
     public WiseSaying write(String content, String author) {
 
-        WiseSaying wiseSaying = new WiseSaying(++lastId, content, author);
-        wiseSayings.add(wiseSaying);
+        WiseSaying wiseSaying = new WiseSaying(content, author);
+
+        wiseSayingRepository.save(wiseSaying);
 
         return wiseSaying;
     }
@@ -31,10 +37,8 @@ public class WiseSayingService {
         // 기존 로직보다 성능은 안 좋지만, 가독성이 좋음
         // 실무에서는 이런 선택을 하면 안된다.
         // 하지만 removeIf를 보여주기 위해서 사용함
-        return wiseSayings
-                .removeIf(
-                        wiseSaying -> wiseSaying.getId() == id
-                );
+
+        return wiseSayingRepository.deleteById(id);
     }
 
 //    private int findIndexById(int id) {
@@ -54,11 +58,7 @@ public class WiseSayingService {
 //        int index = findIndexById(id);
 //        if (index == -1) return null;
 //        return wiseSayings.get(index);
-        return wiseSayings
-                .stream()
-                .filter(wiseSaying -> wiseSaying.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return wiseSayingRepository.findById(id);
     }
 
     public void modify(WiseSaying wiseSaying, String content, String author) {
@@ -67,6 +67,7 @@ public class WiseSayingService {
     }
 
     public List<WiseSaying> findForList() {
-        return wiseSayings.reversed();
+        return wiseSayingRepository.findForList();
+
     }
 }

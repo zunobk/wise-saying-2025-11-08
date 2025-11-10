@@ -4,7 +4,6 @@ import com.back.Rq;
 import com.back.WiseSaying;
 import com.back.domain.wiseSaying.service.WiseSayingService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
