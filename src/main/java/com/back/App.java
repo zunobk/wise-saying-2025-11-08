@@ -9,15 +9,13 @@ import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class App {
-
-    private Scanner scanner = new Scanner(System.in);
-
     //시작
     public void run() {
         System.out.println("== 명언 앱 ==");
 
-        SystemController systemController = new SystemController();
-        WiseSayingController wiseSayingController = new WiseSayingController(scanner);
+        Scanner scanner = AppContext.scanner;
+        SystemController systemController = AppContext.systemController;
+        WiseSayingController wiseSayingController = AppContext.wiseSayingController;
 
         while (true) {
             System.out.print("명령) ");
